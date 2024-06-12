@@ -56,7 +56,7 @@ const Countdown = ul().setup((ctx) => {
 const Sidebar = div().setup((ctx) => {
   ctx.class('sidebar')
   ctx.nest([
-    img().attr('src', '/logo.svg'),
+    img().attr('src', 'https://mavulp.github.io/countdown/logo.svg'),
     h2([
       span('Hivecom'),
       strong('Countdown'),
