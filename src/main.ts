@@ -28,8 +28,8 @@ const Countdown = ul().setup((ctx) => {
     // user would re-sort it again. By creating a shallow copy we should
     // hopefully prevent this from happening
     [...events]
-      .filter(item => dayjs(item.date, INPUT_FORMAT).diff(dayjs()) > 0)
-      .sort((a, b) => dayjs(a.date).diff(dayjs(b.date)) > 0 ? 1 : -1),
+      .filter(item => dayjs().isBefore(dayjs(item.date, INPUT_FORMAT)))
+      .sort((a, b) => dayjs(a.date, INPUT_FORMAT).isBefore(dayjs(b.date, INPUT_FORMAT)) ? -1 : 1),
   ))
 
   // Update time until all the events every second
