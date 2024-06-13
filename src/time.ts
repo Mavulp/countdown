@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import type { CountdownEvent, FormattedEvent } from './events'
 
+// Specify the date input format
 export const INPUT_FORMAT = 'DD-MM-YYYY'
 
 export function formatDateUntil(date: string) {

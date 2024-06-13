@@ -1,4 +1,4 @@
-import { div, fragment, h2, h3, img, p, reusable, span, strong, ul } from '@dolanske/cascade'
+import { div, fragment, ul } from '@dolanske/cascade'
 import { ref } from '@vue/reactivity'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -7,34 +7,27 @@ import duration from 'dayjs/plugin/duration'
 import type { FormattedEvent } from './events'
 import { events } from './events'
 import { INPUT_FORMAT, formatEventData } from './time'
+import { CountdownItem } from './components/CountdownItem'
+import { Sidebar } from './components/Sidebar'
 
 dayjs.extend(relativeTime)
 dayjs.extend(customParseFormat)
 dayjs.extend(duration)
 
-const CountdownItem = reusable('li', (ctx, props: FormattedEvent) => {
-  ctx.nest([
-    h3(props.name),
-    p(props.description).if(props.description),
-    div().class('divider'),
-    span(props.displayDate).class('date'),
-    div([
-      strong(props.untilDate),
-      span(props.untilTime),
-    ]).class('countdown'),
-  ])
-})
-
+// One time use component for logic extraction
 const Countdown = ul().setup((ctx) => {
   // Get the square root of the event count, to more evenly distrubute them
   // across the viewport
   const columns = Math.min(3, Math.ceil(Math.sqrt(events.length)))
   ctx.style({ 'grid-template-columns': `repeat(${columns}, 1fr)` })
 
-  // Preformat events to contain the `until` property which is derived from the
-  // event date
+  // Preformat events to include the countdown values
   const formattedEvents = ref<FormattedEvent[]>(formatEventData(
-    events
+    // Deploying to github pages creates a static file which is served to all
+    // users. So when a user visits the page, the array would get sorted. Next
+    // user would re-sort it again. By creating a shallow copy we should
+    // hopefully prevent this from happening
+    [...events]
       .filter(item => dayjs(item.date, INPUT_FORMAT).diff(dayjs()) > 0)
       .sort((a, b) => dayjs(a.date).diff(dayjs(b.date)) > 0 ? 1 : -1),
   ))
@@ -44,7 +37,7 @@ const Countdown = ul().setup((ctx) => {
     formattedEvents.value = formatEventData(formattedEvents.value)
   }, 1000)
 
-  // Render
+  // Render items
   ctx.for(formattedEvents, (event) => {
     return CountdownItem().props(event)
   })
@@ -53,19 +46,7 @@ const Countdown = ul().setup((ctx) => {
   ctx.onDestroy(() => clearInterval(intervalHandler))
 })
 
-const Sidebar = div().setup((ctx) => {
-  ctx.class('sidebar')
-  ctx.nest([
-    img().attr('src', 'https://mavulp.github.io/countdown/logo.svg'),
-    h2([
-      span('Hivecom'),
-      strong('Countdown'),
-    ]),
-    p().html(`Collection of upcoming events in the hivecom community. If you want your event added, please <a href="https://github.com/Mavulp/countdown/issues/new?assignees=dolanske&labels=&projects=&template=new-event.md&title=%5BRequest%5D+New+event" tarrget="_blank">create an issue</a>. <br /><br /> Designed and implemented by dolanske on Wednesday, in 2024.`),
-  ])
-})
-
-const App = fragment().nest([
+const App = fragment([
   Countdown,
   div(
     Sidebar,
