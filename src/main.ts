@@ -16,7 +16,7 @@ dayjs.extend(duration)
 
 // One time use component for logic extraction
 const Countdown = ul().setup((ctx) => {
-  // Get the square root of the event count, to more evenly distrubute them
+// Get the square root of the event count, to more evenly distrubute them
   // across the viewport
   const columns = Math.min(3, Math.ceil(Math.sqrt(events.length)))
   ctx.style({ 'grid-template-columns': `repeat(${columns}, 1fr)` })
