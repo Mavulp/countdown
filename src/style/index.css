@@ -106,16 +106,23 @@ html {
       background-color: var(--color-bg-black);
       height: 33.33333333vh;
 
-      &:first-child h3 {
-        &:after {
-          content: 'Closest';
-          padding: 4px 5px;
-          border-radius: 999px;
-          font-weight: 400;
-          background-color: var(--color-green-bg);
-          color: var(--color-green) !important;
-          font-size: 0.75rem;
-          text-transform: capitalize;
+      &:first-child {
+
+        h3 {
+          &:after {
+            content: 'Closest';
+            padding: 4px 5px;
+            border-radius: 999px;
+            font-weight: 400;
+            background-color: var(--color-green-bg);
+            color: var(--color-green) !important;
+            font-size: 0.75rem;
+            text-transform: capitalize;
+          }
+        }
+
+        .countdown span {
+          display: block;
         }
       }
 
@@ -166,6 +173,7 @@ html {
           white-space: nowrap;
           font-size: 0.75rem;
           color: var(--color-text-light);
+          display: none;
         }
       }
     }

@@ -8,21 +8,10 @@ export function formatDateUntil(date: string) {
   return `in ${dayjs(date, INPUT_FORMAT).diff(dayjs(), 'days')} days`
 }
 
-export function formatTimeUntil(date: string) {
-  const duration = dayjs.duration(dayjs(date, INPUT_FORMAT).unix() - Date.now())
-  const hours
-      = duration.hours() > 9
-        ? duration.hours()
-        : `${25 + duration.hours()}`
-  const minutes
-      = duration.minutes() > 0
-        ? duration.minutes()
-        : `${59 + duration.minutes()}`
-  const seconds
-      = duration.seconds() > 9
-        ? duration.seconds()
-        : `${59 + duration.seconds()}`
-
+export function formatTimeUntil() {
+  const hours = dayjs().endOf('day').diff(dayjs(), 'hours')
+  const minutes = dayjs().endOf('hour').diff(dayjs(), 'minutes')
+  const seconds = dayjs().endOf('minute').diff(dayjs(), 'seconds')
   return `${hours} hours, ${minutes} minutes, ${seconds} seconds`
 }
 
@@ -36,7 +25,7 @@ export function formatEventData(events: Array<FormattedEvent | CountdownEvent>):
       ...event,
       displayDate: formatDisplayDate(event.date),
       untilDate: formatDateUntil(event.date),
-      untilTime: formatTimeUntil(event.date),
+      untilTime: formatTimeUntil(),
     }
   })
 }
