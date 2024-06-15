@@ -37,6 +37,10 @@
   #app {
     flex-direction: column-reverse;
 
+    ul li {
+      max-height: 325px;
+    }
+
     .sidebar-wrap {
       width: 100%;
 
