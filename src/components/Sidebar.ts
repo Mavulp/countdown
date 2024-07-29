@@ -1,6 +1,7 @@
 import { button, div, h2, hr, img, p } from '@dolanske/cascade'
-import type { Ref } from '@vue/reactivity'
+import { type Ref, computed } from '@vue/reactivity'
 import type { FormattedEvent } from '../types'
+import { FAKE_EVENT_TITLE } from '../data'
 
 interface Props {
   formattedEvents: Ref<FormattedEvent[]>
@@ -25,11 +26,15 @@ function setActiveHash(e: any) {
 }
 
 export const Sidebar = div().setup((ctx, props: Props) => {
+  const upcomingEventsString = computed(() =>
+    `${props.formattedEvents.value.filter(e => e.title !== FAKE_EVENT_TITLE).length} upcoming`,
+  )
+
   ctx.class('sidebar')
   ctx.nest([
     img().attr('src', 'https://mavulp.github.io/countdown/logo.svg'),
     h2('Hivecom \n countdown'),
-    p(`${props.formattedEvents.value.length} upcoming`),
+    p(upcomingEventsString),
     hr(),
     button('Upcoming')
       .class({ active: ['#upcoming', ''].includes(window.location.hash) })
