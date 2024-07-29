@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import duration from 'dayjs/plugin/duration'
-import type { FormattedEvent } from './types'
+import type { EventItem, FormattedEvent } from './types'
 import { INPUT_FORMAT, formatEventData } from './time'
 import { CountdownItem } from './components/CountdownItem'
 import { Sidebar } from './components/Sidebar'
@@ -14,7 +14,15 @@ dayjs.extend(relativeTime)
 dayjs.extend(customParseFormat)
 dayjs.extend(duration)
 
-const events = await getEvents() ?? []
+let events: Array<FormattedEvent | EventItem> = []
+
+getEvents()
+  .then((data) => {
+    // Initially sort dataset
+    events = data ?? []
+    sortAndFormatDataset()
+  })
+
 const formattedEvents = ref<FormattedEvent[]>([])
 
 // ----------------------------------------------------------------------------
@@ -40,9 +48,6 @@ function sortAndFormatDataset() {
     }
   }
 }
-
-// Initially sort dataset
-sortAndFormatDataset()
 
 // Watch for hash changes and sort again
 window.addEventListener('hashchange', sortAndFormatDataset)
