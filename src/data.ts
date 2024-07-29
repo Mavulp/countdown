@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '../types/supabase'
+import type { FormattedEvent } from './types'
 
 export const supabase = createClient<Database>(
   'https://camqocmuyolpjjbnbcha.supabase.co',
@@ -9,4 +10,26 @@ export const supabase = createClient<Database>(
 export async function getEvents() {
   const { data } = await supabase.from('events').select()
   return data
+}
+
+export const FAKE_EVENT_TITLE = 'fake-event-identifier'
+
+export function createFakeEvent(id: number): FormattedEvent {
+  return {
+    created_at: '',
+    created_by: null,
+    date: '',
+    description: '',
+    id: id + 99999999,
+    link: null,
+    location: null,
+    markdown: null,
+    modified_at: null,
+    modified_by: null,
+    note: null,
+    title: FAKE_EVENT_TITLE,
+    displayDate: '',
+    untilDate: '',
+    untilTime: '',
+  }
 }

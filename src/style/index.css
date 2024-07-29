@@ -22,6 +22,7 @@ html {
   display: flex;
 
   * {
+    font-family: 'Inter';
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -93,6 +94,34 @@ html {
         }
       }
     }
+
+    button {
+      height: 40px;
+      width: calc(100% + 32px);
+      text-align: left;
+      padding: 0 16px;
+      margin-left: -16px;
+      position: relative;
+      color: var(--color-text-lighter);
+
+      &.active {
+        color: var(--color-text);
+
+        &:before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 2px;
+          background-color: var(--color-accent);
+        }
+      }
+
+      &:hover {
+        background-color: var(--color-bg-light);
+      }
+    }
   }
 
   ul {
@@ -101,6 +130,7 @@ html {
     height: 100%;
     flex: 1;
     background-color: var(--color-bg-black);
+    grid-template-columns: repeat(3, 1fr);
 
     --item-padding: 20px;
 

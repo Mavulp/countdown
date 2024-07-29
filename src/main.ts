@@ -1,4 +1,4 @@
-import { div, fragment, ul } from '@dolanske/cascade'
+import { div, fragment, li, ul } from '@dolanske/cascade'
 import { ref } from '@vue/reactivity'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -14,22 +14,54 @@ dayjs.extend(relativeTime)
 dayjs.extend(customParseFormat)
 dayjs.extend(duration)
 
-// Fetch just once on load
 const events = await getEvents() ?? []
+const formattedEvents = ref<FormattedEvent[]>([])
 
-const formattedEvents = ref<FormattedEvent[]>(formatEventData(
-  events
-    .filter(item => dayjs().isBefore(dayjs(item.date, INPUT_FORMAT)))
-    .sort((a, b) => dayjs(a.date, INPUT_FORMAT).isBefore(dayjs(b.date, INPUT_FORMAT)) ? -1 : 1),
-))
+// ----------------------------------------------------------------------------
+function sortAndFormatDataset() {
+  switch (window.location.hash) {
+    case '#previous': {
+      formattedEvents.value = formatEventData(
+        events
+          .filter(item => dayjs().isAfter(dayjs(item.date, INPUT_FORMAT)))
+          .sort((a, b) => dayjs(a.date, INPUT_FORMAT).isAfter(dayjs(b.date, INPUT_FORMAT)) ? -1 : 1),
+      )
+      break
+    }
 
+    case '#upcoming':
+    default: {
+      formattedEvents.value = formatEventData(
+        events
+          .filter(item => dayjs().isBefore(dayjs(item.date, INPUT_FORMAT)))
+          .sort((a, b) => dayjs(a.date, INPUT_FORMAT).isBefore(dayjs(b.date, INPUT_FORMAT)) ? -1 : 1),
+      )
+      break
+    }
+  }
+}
+
+// Initially sort dataset
+sortAndFormatDataset()
+
+// Watch for hash changes and sort again
+window.addEventListener('hashchange', sortAndFormatDataset)
+
+// ----------------------------------------------------------------------------
+// Recalculate fillter items when page resizes
+let prevSize = 0
+window.addEventListener('resize', () => {
+  // I can't be arsed to optimize this, but at least we won't resize when it's
+  // not needed on phone & desktop
+  if (prevSize <= 1280 && prevSize >= 512) {
+    formattedEvents.value = formatEventData(formattedEvents.value)
+  }
+  prevSize = document.documentElement.clientWidth
+})
+
+// ----------------------------------------------------------------------------
 // One time use component for logic extraction
 const Countdown = ul().setup(async (ctx) => {
-  // Get the square root of the event count, to more evenly distrubute them
-  // across the viewport
-  const columns = Math.min(3, Math.ceil(Math.sqrt(events.length)))
-  ctx.style({ 'grid-template-columns': `repeat(${columns}, 1fr)` })
-
   // Update time until all the events every second
   const intervalHandler = setInterval(() => {
     formattedEvents.value = formatEventData(formattedEvents.value)
@@ -37,6 +69,9 @@ const Countdown = ul().setup(async (ctx) => {
 
   // Render items
   ctx.for(formattedEvents, (event) => {
+    if (event.title === 'fake-event-identifier')
+      return li('').class('filler')
+
     return CountdownItem().props(event)
   })
 
@@ -47,10 +82,7 @@ const Countdown = ul().setup(async (ctx) => {
 const App = fragment([
   Countdown,
   div(
-    Sidebar.props({
-      upcomingCount: formattedEvents.value.length,
-      // pastCount: events.length - formattedEvents.value.length,
-    }),
+    Sidebar.props({ formattedEvents }),
   ).class('sidebar-wrap'),
 ])
 

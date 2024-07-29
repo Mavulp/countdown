@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import type { EventItem, FormattedEvent } from './types'
+import { FAKE_EVENT_TITLE, createFakeEvent } from './data'
 
 // Specify the date input format
 export const INPUT_FORMAT = 'YYYY-MM-DD'
@@ -20,7 +21,9 @@ export function formatDisplayDate(date: string) {
 }
 
 export function formatEventData(events: Array<FormattedEvent | EventItem>): FormattedEvent[] {
-  return events.map((event) => {
+  events = events.filter(e => e.title !== FAKE_EVENT_TITLE)
+
+  const data = events.map((event) => {
     return {
       ...event,
       displayDate: formatDisplayDate(event.date),
@@ -28,4 +31,22 @@ export function formatEventData(events: Array<FormattedEvent | EventItem>): Form
       untilTime: formatTimeUntil(),
     }
   })
+
+  // Pad events to always fill the screen
+  const clientWidth = document.documentElement.clientWidth
+
+  if (clientWidth >= 1280) {
+    // Desktop, needs a 9x9 grid
+    for (let i = data.length; i < 9; i++) {
+      data.push(createFakeEvent(i))
+    }
+  }
+  else if (clientWidth < 1280 && clientWidth >= 888) {
+    // Tablet, needs 2x6 grid
+    for (let i = data.length; i < 6; i++) {
+      data.push(createFakeEvent(i))
+    }
+  }
+
+  return data
 }
