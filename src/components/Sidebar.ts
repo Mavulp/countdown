@@ -1,5 +1,5 @@
 import { button, div, h2, hr, img, p } from '@dolanske/cascade'
-import { type Ref, ref } from '@vue/reactivity'
+import type { Ref } from '@vue/reactivity'
 import type { FormattedEvent } from '../types'
 
 interface Props {
