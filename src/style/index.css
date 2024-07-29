@@ -55,7 +55,7 @@ html {
     justify-content: flex-start;
     align-items: flex-start;
 
-    &:has(button[id='previous'].active) {
+    &:has(button[id='past'].active) {
       img {
         transform: rotate(180deg);
       }
