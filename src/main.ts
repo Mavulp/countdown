@@ -30,8 +30,6 @@ const Countdown = ul().setup(async (ctx) => {
   const columns = Math.min(3, Math.ceil(Math.sqrt(events.length)))
   ctx.style({ 'grid-template-columns': `repeat(${columns}, 1fr)` })
 
-  // Preformat events to include the countdown values
-
   // Update time until all the events every second
   const intervalHandler = setInterval(() => {
     formattedEvents.value = formatEventData(formattedEvents.value)
