@@ -31,7 +31,7 @@ export const Sidebar = div().setup((ctx, props: Props) => {
     h2('Hivecom \n countdown'),
     p(`${props.formattedEvents.value.length} upcoming`),
     hr(),
-    button('Upcoming Events')
+    button('Upcoming')
       .class({ active: ['#upcoming', ''].includes(window.location.hash) })
       .id('upcoming')
       .click(setActiveHash),

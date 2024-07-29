@@ -55,10 +55,17 @@ html {
     justify-content: flex-start;
     align-items: flex-start;
 
+    &:has(button[id='previous'].active) {
+      img {
+        transform: rotate(180deg);
+      }
+    }
+
     img {
       display: block;
       width: 24px;
       margin-bottom: 8px;
+      transition: 0.1s all ease-in-out;
     }
 
     h2 {
