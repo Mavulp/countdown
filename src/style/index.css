@@ -43,30 +43,40 @@ html {
     width: 192px;
     position: sticky;
     top: 0;
+    height: 100vh;
     padding: 16px;
-    background-color: var(--color-bg-black);
+    background-color: var(--color-bg);
+    border-left: 1px solid var(--color-border);
+    margin-left: -1px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 
     img {
       display: block;
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 32px;
+      width: 24px;
+      margin-bottom: 8px;
     }
 
     h2 {
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      font-size: 2rem;
       text-transform: uppercase;
       font-weight: 600;
-      margin-bottom: 16px;
-      color: var(--color-text-light);
+      color: var(--color-text);
+      font-size: 1rem;
+      line-height: 1.4rem;
 
-      span {
-        font-weight: 300;
-        color: var(--color-text-lighter);
+      & + p {
+        margin-top: 6px;
       }
+    }
+
+    hr {
+      display: block;
+      width: 100%;
+      margin: 16px 0;
+      border-bottom: 1px solid var(--color-border);
     }
 
     p {
@@ -75,7 +85,7 @@ html {
       line-height: 1.2em;
 
       a {
-        color: var(--color-red);
+        color: var(--color-accent-light);
         text-decoration: none;
 
         &:hover {
@@ -108,7 +118,6 @@ html {
       min-height: 292px;
 
       &:first-child {
-
         h3 {
           &:after {
             content: 'Closest';

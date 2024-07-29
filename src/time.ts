@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
-import type { CountdownEvent, FormattedEvent } from './events'
+import type { EventItem, FormattedEvent } from './types'
 
 // Specify the date input format
-export const INPUT_FORMAT = 'DD-MM-YYYY'
+export const INPUT_FORMAT = 'YYYY-MM-DD'
 
 export function formatDateUntil(date: string) {
   return `in ${dayjs(date, INPUT_FORMAT).diff(dayjs(), 'days')} days`
@@ -19,7 +19,7 @@ export function formatDisplayDate(date: string) {
   return dayjs(date, INPUT_FORMAT).format('dddd, DD MMMM YYYY')
 }
 
-export function formatEventData(events: Array<FormattedEvent | CountdownEvent>): FormattedEvent[] {
+export function formatEventData(events: Array<FormattedEvent | EventItem>): FormattedEvent[] {
   return events.map((event) => {
     return {
       ...event,
