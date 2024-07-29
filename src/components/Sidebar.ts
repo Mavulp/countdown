@@ -9,14 +9,14 @@ interface Props {
 // I don't feel like fixing my libraries rn so I'll do it the old fashioned way
 function setActiveHash(e: any) {
   const upcoming = document.querySelector('#upcoming')
-  const past = document.querySelector('#previous')
+  const past = document.querySelector('#past')
   const id = e.target?.id
 
   if (id === 'upcoming') {
     upcoming?.classList.add('active')
     past?.classList.remove('active')
   }
-  else if (id === 'previous') {
+  else if (id === 'past') {
     upcoming?.classList.remove('active')
     past?.classList.add('active')
   }
@@ -35,9 +35,9 @@ export const Sidebar = div().setup((ctx, props: Props) => {
       .class({ active: ['#upcoming', ''].includes(window.location.hash) })
       .id('upcoming')
       .click(setActiveHash),
-    button('Previous')
-      .class({ active: window.location.hash === '#previous' })
-      .id('previous')
+    button('Past')
+      .class({ active: window.location.hash === '#past' })
+      .id('past')
       .click(setActiveHash),
     div().style('flex', 1),
     p().html(`Collection of upcoming events in the hivecom community. If you want your event added, please <a href="https://github.com/Mavulp/countdown/issues/new?assignees=dolanske&labels=&projects=&template=new-event.md&title=%5BRequest%5D+New+event" tarrget="_blank">create an issue</a>. <br /><br /> Designed and implemented by dolanske on Wednesday, in 2024.`),

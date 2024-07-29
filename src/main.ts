@@ -28,7 +28,7 @@ const formattedEvents = ref<FormattedEvent[]>([])
 // ----------------------------------------------------------------------------
 function sortAndFormatDataset() {
   switch (window.location.hash) {
-    case '#previous': {
+    case '#past': {
       formattedEvents.value = formatEventData(
         events
           .filter(item => dayjs().isAfter(dayjs(item.date, INPUT_FORMAT)))

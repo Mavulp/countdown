@@ -154,6 +154,13 @@ html {
       height: 33.33333333vh;
       min-height: 292px;
 
+      &.minus {
+        .countdown span {
+          visibility: hidden;
+          /* display: none !important; */
+        }
+      }
+
       &:first-child {
         h3 {
           &:after {
