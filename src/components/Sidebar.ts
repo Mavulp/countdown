@@ -27,7 +27,7 @@ function setActiveHash(e: any) {
 
 export const Sidebar = div().setup((ctx, props: Props) => {
   const upcomingEventsString = computed(() =>
-    `${props.formattedEvents.value.filter(e => e.title !== FAKE_EVENT_TITLE).length} upcoming`,
+    `${props.formattedEvents.value.filter(e => e.title !== FAKE_EVENT_TITLE).length} events`,
   )
 
   ctx.class('sidebar')
